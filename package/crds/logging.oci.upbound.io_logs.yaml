@@ -206,7 +206,7 @@ spec:
                     type: string
                   retentionDuration:
                     description: (Updatable) Log retention duration in 30-day increments
-                      (30, 60, 90 and so on).
+                      (30, 60, 90 and so on until 180).
                     type: number
                 required:
                 - displayName

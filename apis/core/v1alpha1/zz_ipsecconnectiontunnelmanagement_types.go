@@ -15,13 +15,13 @@ import (
 
 type BGPSessionInfoObservation struct {
 
-	// The IPSec connection's tunnel's lifecycle state.
+	// The state of the BGP IPv6 session.
 	BGPIpv6State *string `json:"bgpIpv6State,omitempty" tf:"bgp_ipv6state,omitempty"`
 
-	// the state of the BGP.
+	// The state of the BGP session.
 	BGPState *string `json:"bgpState,omitempty" tf:"bgp_state,omitempty"`
 
-	// This is the value of the Oracle Bgp ASN in asplain format, as a string. Example: 1587232876 (4 byte ASN) or 12345 (2 byte ASN)
+	// The Oracle BGP ASN.
 	OracleBGPAsn *string `json:"oracleBgpAsn,omitempty" tf:"oracle_bgp_asn,omitempty"`
 }
 
@@ -68,6 +68,9 @@ type EncryptionDomainConfigParameters struct {
 
 type IpsecConnectionTunnelManagementObservation struct {
 
+	// The list of virtual circuit OCIDs over which your network can reach this tunnel.
+	AssociatedVirtualCircuits []*string `json:"associatedVirtualCircuits,omitempty" tf:"associated_virtual_circuits,omitempty"`
+
 	// Information for establishing a BGP session for the IPSec tunnel. Required if the tunnel uses BGP dynamic routing.
 	// +kubebuilder:validation:Optional
 	BGPSessionInfo []BGPSessionInfoObservation `json:"bgpSessionInfo,omitempty" tf:"bgp_session_info,omitempty"`
@@ -75,7 +78,7 @@ type IpsecConnectionTunnelManagementObservation struct {
 	// The OCID of the compartment containing the tunnel.
 	CompartmentID *string `json:"compartmentId,omitempty" tf:"compartment_id,omitempty"`
 
-	// The IP address of Cpe headend.  Example: 129.146.17.50
+	// The IP address of the CPE device's VPN headend.  Example: 203.0.113.22
 	CpeIP *string `json:"cpeIp,omitempty" tf:"cpe_ip,omitempty"`
 
 	DpdMode *string `json:"dpdMode,omitempty" tf:"dpd_mode,omitempty"`

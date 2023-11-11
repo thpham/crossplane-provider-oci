@@ -322,21 +322,25 @@ spec:
             properties:
               atProvider:
                 properties:
+                  associatedVirtualCircuits:
+                    description: The list of virtual circuit OCIDs over which your
+                      network can reach this tunnel.
+                    items:
+                      type: string
+                    type: array
                   bgpSessionInfo:
                     description: Information for establishing a BGP session for the
                       IPSec tunnel. Required if the tunnel uses BGP dynamic routing.
                     items:
                       properties:
                         bgpIpv6State:
-                          description: The IPSec connection's tunnel's lifecycle state.
+                          description: The state of the BGP IPv6 session.
                           type: string
                         bgpState:
-                          description: the state of the BGP.
+                          description: The state of the BGP session.
                           type: string
                         oracleBgpAsn:
-                          description: 'This is the value of the Oracle Bgp ASN in
-                            asplain format, as a string. Example: 1587232876 (4 byte
-                            ASN) or 12345 (2 byte ASN)'
+                          description: The Oracle BGP ASN.
                           type: string
                       type: object
                     type: array
@@ -344,7 +348,8 @@ spec:
                     description: The OCID of the compartment containing the tunnel.
                     type: string
                   cpeIp:
-                    description: 'The IP address of Cpe headend.  Example: 129.146.17.50'
+                    description: 'The IP address of the CPE device''s VPN headend.  Example:
+                      203.0.113.22'
                     type: string
                   dpdMode:
                     type: string

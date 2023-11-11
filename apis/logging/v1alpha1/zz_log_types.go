@@ -87,7 +87,7 @@ type LogParameters struct {
 	// +kubebuilder:validation:Required
 	LogType *string `json:"logType" tf:"log_type,omitempty"`
 
-	// (Updatable) Log retention duration in 30-day increments (30, 60, 90 and so on).
+	// (Updatable) Log retention duration in 30-day increments (30, 60, 90 and so on until 180).
 	// +kubebuilder:validation:Optional
 	RetentionDuration *float64 `json:"retentionDuration,omitempty" tf:"retention_duration,omitempty"`
 }

@@ -13,15 +13,40 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ExternalKeyReferenceDetailsObservation struct {
+
+	// ExternalKeyId refers to the globally unique key Id associated with the key created in external vault in CTM
+	ExternalKeyID *string `json:"externalKeyId,omitempty" tf:"external_key_id,omitempty"`
+
+	// Key version ID associated with the external key.
+	ExternalKeyVersionID *string `json:"externalKeyVersionId,omitempty" tf:"external_key_version_id,omitempty"`
+}
+
+type ExternalKeyReferenceDetailsParameters struct {
+}
+
+type ExternalKeyReferenceObservation struct {
+}
+
+type ExternalKeyReferenceParameters struct {
+
+	// ExternalKeyId refers to the globally unique key Id associated with the key created in external vault in CTM
+	// +kubebuilder:validation:Required
+	ExternalKeyID *string `json:"externalKeyId" tf:"external_key_id,omitempty"`
+}
+
 type KeyObservation struct {
 
 	// The OCID of the key version used in cryptographic operations. During key rotation, the service might be in a transitional state where this or a newer key version are used intermittently. The currentKeyVersion property is updated when the service is guaranteed to use the new key version for all subsequent encryption operations.
 	CurrentKeyVersion *string `json:"currentKeyVersion,omitempty" tf:"current_key_version,omitempty"`
 
+	// Key reference data to be returned to the customer as a response.
+	ExternalKeyReferenceDetails []ExternalKeyReferenceDetailsObservation `json:"externalKeyReferenceDetails,omitempty" tf:"external_key_reference_details,omitempty"`
+
 	// The OCID of the key.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// A boolean that will be true when key is primary, and will be false when key is a replica from a primary key.
+	// A Boolean value that indicates whether the Key belongs to primary Vault or replica vault.
 	IsPrimary *bool `json:"isPrimary,omitempty" tf:"is_primary,omitempty"`
 
 	// Key replica details
@@ -67,6 +92,10 @@ type KeyParameters struct {
 	// +kubebuilder:validation:Required
 	DisplayName *string `json:"displayName" tf:"display_name,omitempty"`
 
+	// A reference to the key on external key manager.
+	// +kubebuilder:validation:Optional
+	ExternalKeyReference []ExternalKeyReferenceParameters `json:"externalKeyReference,omitempty" tf:"external_key_reference,omitempty"`
+
 	// (Updatable) Free-form tags for this resource. Each tag is a simple key-value pair with no predefined name, type, or namespace. For more information, see Resource Tags. Example: {"Department": "Finance"}
 	// +kubebuilder:validation:Optional
 	FreeformTags map[string]*string `json:"freeformTags,omitempty" tf:"freeform_tags,omitempty"`
@@ -79,7 +108,7 @@ type KeyParameters struct {
 	// +kubebuilder:validation:Required
 	ManagementEndpoint *string `json:"managementEndpoint" tf:"management_endpoint,omitempty"`
 
-	// The key's protection mode indicates how the key persists and where cryptographic operations that use the key are performed. A protection mode of HSM means that the key persists on a hardware security module (HSM) and all cryptographic operations are performed inside the HSM. A protection mode of SOFTWARE means that the key persists on the server, protected by the vault's RSA wrapping key which persists  on the HSM. All cryptographic operations that use a key with a protection mode of SOFTWARE are performed on the server. By default,  a key's protection mode is set to HSM. You can't change a key's protection mode after the key is created or imported.
+	// The key's protection mode indicates how the key persists and where cryptographic operations that use the key are performed. A protection mode of HSM means that the key persists on a hardware security module (HSM) and all cryptographic operations are performed inside the HSM. A protection mode of SOFTWARE means that the key persists on the server, protected by the vault's RSA wrapping key which persists on the HSM. All cryptographic operations that use a key with a protection mode of SOFTWARE are performed on the server. By default, a key's protection mode is set to HSM. You can't change a key's protection mode after the key is created or imported. A protection mode of EXTERNAL mean that the key persists on the customer's external key manager which is hosted externally outside of oracle. Oracle only hold a reference to that key. All cryptographic operations that use a key with a protection mode of EXTERNAL are performed by external key manager.
 	// +kubebuilder:validation:Optional
 	ProtectionMode *string `json:"protectionMode,omitempty" tf:"protection_mode,omitempty"`
 
@@ -105,7 +134,7 @@ type KeyShapeObservation struct {
 
 type KeyShapeParameters struct {
 
-	// The algorithm used by a key's key versions to encrypt or decrypt.
+	// The algorithm used by a key's key versions to encrypt or decrypt. Only AES algorithm is supported for External keys.
 	// +kubebuilder:validation:Required
 	Algorithm *string `json:"algorithm" tf:"algorithm,omitempty"`
 

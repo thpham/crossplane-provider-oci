@@ -4,14 +4,14 @@
 PROJECT_NAME := provider-oci
 PROJECT_REPO := github.com/oracle/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION := 1.4.6
+export TERRAFORM_VERSION := 1.5.5
 
 export TERRAFORM_PROVIDER_SOURCE := oracle/oci
 export TERRAFORM_PROVIDER_REPO := https://github.com/oracle/terraform-provider-oci
-export TERRAFORM_PROVIDER_VERSION := 4.120.0
+export TERRAFORM_PROVIDER_VERSION := 5.20.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-oci
-export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-oci_v4.120.0
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-oci/4.120.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-oci_v5.20.0
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-oci/5.20.0
 export TERRAFORM_DOCS_PATH := website/docs/r
 
 export CROSSPLANE_PROVIDER_VERSION := 1.0
@@ -19,10 +19,10 @@ export CROSSPLANE_PROVIDER_VERSION := 1.0
 # USER_AGENT_PROVIDER_NAME (default=Oracle-TerraformProvider).
 # The value will be inserted as <USER_AGENT_PROVIDER_NAME>/<terraform oci version>
 # Sample from terraform oci verbose log:
-# User-Agent: Oracle-GoSDK/65.37.1 ... Oracle-CrossplaneProvider/1.0 Oracle-TerraformProvider/4.120.0
+# User-Agent: Oracle-GoSDK/65.37.1 ... Oracle-CrossplaneProvider/1.0 Oracle-TerraformProvider/5.20.0
 export USER_AGENT_PROVIDER_NAME := Oracle-CrossplaneProvider/$(CROSSPLANE_PROVIDER_VERSION) Oracle-TerraformProvider
 
-PLATFORMS ?= darwin_amd64 linux_arm64 linux_amd64
+PLATFORMS ?= linux_arm64 linux_amd64 #darwin_amd64
 
 # -include will silently skip missing files, which allows us
 # to load those files with a target in the Makefile. If only
@@ -48,7 +48,7 @@ NPROCS ?= 1
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
 GO_REQUIRED_VERSION ?= 1.19
-GOLANGCILINT_VERSION ?= 1.50.0
+GOLANGCILINT_VERSION ?= 1.54.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -58,9 +58,9 @@ GO_SUBDIRS += cmd internal apis
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.15.0
-UP_VERSION = v0.14.0
+UP_VERSION = v0.21.0
 UP_CHANNEL = stable
-UPTEST_VERSION = v0.2.1
+UPTEST_VERSION = v0.6.1
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
